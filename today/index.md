@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Bugunku Cozumler
+title: Today Solutions
 permalink: /today/
 ---
 
-# Bugunku Cozumler - 2 Agustos 2025
+# Today's Solutions - 2 Agustos 2025
 
-- [Zip](/zip/20250802.md)
+- [Today](/today/index.html)
