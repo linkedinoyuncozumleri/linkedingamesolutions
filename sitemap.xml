@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://linkedinoyuncozumleri.com/</loc>
+    <loc>https://linkedingamesolutions.com/</loc>
   </url>
   <url>
-    <loc>https://linkedinoyuncozumleri.com/today/</loc>
+    <loc>https://linkedingamesolutions.com/today/</loc>
   </url>
   <url>
-    <loc>https://linkedinoyuncozumleri.com/zip/</loc>
+    <loc>https://linkedingamesolutions.com/zip/</loc>
   </url>
   <url>
-    <loc>https://linkedinoyuncozumleri.com/queens/</loc>
+    <loc>https://linkedingamesolutions.com/queens/</loc>
   </url>
   <url>
-    <loc>https://linkedinoyuncozumleri.com/tango/</loc>
+    <loc>https://linkedingamesolutions.com/tango/</loc>
+  </url>
+  <url>
+    <loc>https://linkedingamesolutions.com/minisudoku/</loc>
   </url>
   <!-- Optional: Add individual solution pages if they are static -->
   <url>
-    <loc>https://linkedinoyuncozumleri.com/zip/20250802.html</loc>
+    <loc>https://linkedingamesolutions.com/zip/20250924.html</loc>
   </url>
   <url>
-    <loc>https://linkedinoyuncozumleri.com/queens/20250802.html</loc>
+    <loc>https://linkedingamesolutions.com/queens/20250924.html</loc>
   </url>
   <url>
-    <loc>https://linkedinoyuncozumleri.com/tango/20250802.html</loc>
+    <loc>https://linkedingamesolutions.com/tango/20250924.html</loc>
+  </url>
+  <url>
+    <loc>https://linkedingamesolutions.com/minisudoku/20250924.html</loc>
   </url>
   
 </urlset>
