@@ -1,2 +1,2 @@
-# linkedinoyuncozumleri.github.io
-Linkedin oyun cozumleri hergun burada
+# linkedingamesolutions.com
+Linkedin game solutions are here everyday
