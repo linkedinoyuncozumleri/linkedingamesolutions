@@ -18,7 +18,7 @@
   <url>
     <loc>https://linkedingamesolutions.com/minisudoku/</loc>
   </url>
-  <!-- Optional: Add individual solution pages if they are static -->
+  <!-- Optional: Add individual solution pages if they are static 
   <url>
     <loc>https://linkedingamesolutions.com/zip/20250924.html</loc>
   </url>
@@ -31,5 +31,6 @@
   <url>
     <loc>https://linkedingamesolutions.com/minisudoku/20250924.html</loc>
   </url>
+  -->
   
 </urlset>
