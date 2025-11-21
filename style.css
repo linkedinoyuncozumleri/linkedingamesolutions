@@ -1,59 +1,207 @@
+/* FandomWire-inspired Design */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* Base styles */
 body {
-  font-family: "Segoe UI", Roboto, sans-serif;
-  background-color: #121212;
-  color: #e0e0e0;
-  margin: 2rem;
+  font-family: 'Roboto', 'Poppins', sans-serif;
+  background-color: #000000;
+  color: #cccccc;
   line-height: 1.6;
 }
 
-h1, h2, h3 {
-  color: #ffffff;
-  font-weight: 600;
-  margin-bottom: 0.5em;
+/* Header */
+header {
+  background-color: #000000;
+  border-bottom: 1px solid #333;
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-a {
-  color: #64b5f6;
+header .container {
+  max-width: 1212px;
+  margin: 0 auto;
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
   text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.05em;
+}
+
+header .logo span {
+  color: #0be6af;
+}
+
+header nav {
+  display: flex;
+  gap: 30px;
+}
+
+header nav a {
+  color: #cccccc;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+header nav a:hover {
+  color: #0be6af;
+}
+
+/* Container */
+.container {
+  max-width: 1212px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+main {
+  padding: 60px 15px;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+}
+
+h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  margin-top: 40px;
+}
+
+h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+/* Links */
+a {
+  color: #0be6af;
+  text-decoration: none;
+  transition: color 0.3s;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: #00eeaf;
 }
 
-ul {
-  padding-left: 1.5rem;
+/* Grid Layout for Games */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin: 40px 0;
+}
+
+/* Card styling */
+.game-card {
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(11, 230, 175, 0.2);
+}
+
+.game-card h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #0be6af;
+}
+
+.game-card p {
+  font-size: 14px;
+  color: #cccccc;
+  margin-bottom: 15px;
+}
+
+.game-card a {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0be6af;
+  color: #000000;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.game-card a:hover {
+  background-color: #00eeaf;
+  color: #000000;
+}
+
+/* Lists */
+ul, ol {
+  padding-left: 0;
+  list-style: none;
 }
 
 li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 12px;
+}
+
+.games-grid li a {
+  display: block;
+  padding: 15px;
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.games-grid li a:hover {
+  background-color: #2a2a2a;
 }
 
 /* Image styling */
 img {
-  border: 1px solid #333;
-  border-radius: 6px;
-  margin-top: 1rem;
+  border-radius: 10px;
+  margin: 20px 0;
   max-width: 100%;
-}
-
-/* Container */
-body > * {
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  height: auto;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
 /* Divider line */
 hr {
   border: 0;
   border-top: 1px solid #333;
-  margin: 2rem 0;
+  margin: 40px 0;
 }
 
 /* Back/Navigation links */
 a.nav {
   display: inline-block;
-  margin-top: 2rem;
-  color: #90caf9;
+  margin-top: 30px;
+  color: #0be6af;
