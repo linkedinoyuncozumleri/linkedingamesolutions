@@ -2,35 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://linkedingamesolutions.com/</loc>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://linkedingamesolutions.com/today/</loc>
-  </url>
-  <url>
-    <loc>https://linkedingamesolutions.com/zip/</loc>
-  </url>
-  <url>
-    <loc>https://linkedingamesolutions.com/queens/</loc>
-  </url>
-  <url>
-    <loc>https://linkedingamesolutions.com/tango/</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://linkedingamesolutions.com/minisudoku/</loc>
-  </url>
-  <!-- Optional: Add individual solution pages if they are static 
-  <url>
-    <loc>https://linkedingamesolutions.com/zip/20250924.html</loc>
+    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://linkedingamesolutions.com/queens/20250924.html</loc>
+    <loc>https://linkedingamesolutions.com/zip/</loc>
+    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://linkedingamesolutions.com/tango/20250924.html</loc>
+    <loc>https://linkedingamesolutions.com/queens/</loc>
+    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
   </url>
   <url>
-    <loc>https://linkedingamesolutions.com/minisudoku/20250924.html</loc>
+    <loc>https://linkedingamesolutions.com/tango/</loc>
+    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
   </url>
-  -->
-  
+  <url>
+    <loc>https://linkedingamesolutions.com/about.html</loc>
+    <priority>0.5</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://linkedingamesolutions.com/privacy_policy.html</loc>
+    <priority>0.3</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://linkedingamesolutions.com/terms_of_use.html</loc>
+    <priority>0.3</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://linkedingamesolutions.com/minisudoku/20251122.html</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://linkedingamesolutions.com/zip/20251122.html</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://linkedingamesolutions.com/queens/20251122.html</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://linkedingamesolutions.com/tango/20251122.html</loc>
+    <priority>0.9</priority>
+    <changefreq>daily</changefreq>
+  </url>
 </urlset>

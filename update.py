@@ -3,7 +3,8 @@ import os
 import re
 import sys
 import subprocess
-from datetime import datetime
+from datetime import datetime, timedelta
+import xml.etree.ElementTree as ET
 
 # Turkish month names
 MONTHS_TR = {
@@ -238,6 +239,108 @@ def update_today_index(yyyymmdd: str) -> bool:
 
     return changed
 
+def get_previous_day(yyyymmdd: str) -> str:
+    """Get the previous day in YYYYMMDD format."""
+    date_obj = datetime.strptime(yyyymmdd, "%Y%m%d")
+    previous = date_obj - timedelta(days=1)
+    return previous.strftime("%Y%m%d")
+
+def update_sitemap(yyyymmdd: str) -> bool:
+    """Update sitemap.xml: Add new day, remove previous day."""
+    sitemap_path = "sitemap.xml"
+    if not os.path.exists(sitemap_path):
+        print(f"❌ {sitemap_path} not found.")
+        return False
+
+    previous_day = get_previous_day(yyyymmdd)
+    games = ['minisudoku', 'zip', 'queens', 'tango']
+    changed = False
+
+    # Parse sitemap
+    tree = ET.parse(sitemap_path)
+    root = tree.getroot()
+
+    # Get namespace
+    ns = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+
+    # Remove previous day's solution URLs from sitemap
+    urls_to_remove = []
+    for game in games:
+        prev_url = f"https://linkedingamesolutions.com/{game}/{previous_day}.html"
+        for url_elem in root.findall('.//sm:url', ns):
+            loc = url_elem.find('sm:loc', ns)
+            if loc is not None and loc.text == prev_url:
+                urls_to_remove.append(url_elem)
+                changed = True
+
+    for url_elem in urls_to_remove:
+        root.remove(url_elem)
+
+    # Add new day's solution URLs to sitemap
+    for game in games:
+        new_url = f"https://linkedingamesolutions.com/{game}/{yyyymmdd}.html"
+
+        # Check if already exists
+        exists = False
+        for url_elem in root.findall('.//sm:url', ns):
+            loc = url_elem.find('sm:loc', ns)
+            if loc is not None and loc.text == new_url:
+                exists = True
+                break
+
+        if not exists:
+            # Create new URL element
+            url_elem = ET.Element('url')
+            loc = ET.SubElement(url_elem, 'loc')
+            loc.text = new_url
+            priority = ET.SubElement(url_elem, 'priority')
+            priority.text = '0.9'
+            changefreq = ET.SubElement(url_elem, 'changefreq')
+            changefreq.text = 'daily'
+
+            root.append(url_elem)
+            changed = True
+
+    if changed:
+        # Write back with proper XML declaration
+        tree.write(sitemap_path, encoding='UTF-8', xml_declaration=True)
+        print(f"✅ Updated sitemap.xml: Added {yyyymmdd}, removed {previous_day}")
+    else:
+        print(f"⚠️ Sitemap.xml already up to date.")
+
+    return changed
+
+def update_previous_day_to_noindex(yyyymmdd: str) -> bool:
+    """Add noindex tag to previous day's solution pages."""
+    previous_day = get_previous_day(yyyymmdd)
+    games = ['minisudoku', 'zip', 'queens', 'tango']
+    changed_count = 0
+
+    for game in games:
+        daily_path = os.path.join(game, f"{previous_day}.html")
+        if not os.path.exists(daily_path):
+            continue
+
+        with open(daily_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        # Change from index, follow to noindex, follow
+        if '<meta name="robots" content="index, follow">' in content:
+            content = content.replace(
+                '<meta name="robots" content="index, follow">',
+                '<meta name="robots" content="noindex, follow">'
+            )
+            with open(daily_path, "w", encoding="utf-8") as f:
+                f.write(content)
+            changed_count += 1
+
+    if changed_count > 0:
+        print(f"✅ Updated {changed_count} {previous_day} solution pages to noindex")
+        return True
+    else:
+        print(f"⚠️ No {previous_day} solution pages to update.")
+        return False
+
 def git_commit_changes(yyyymmdd: str, changed_files: list):
     """Create or reuse a git branch, add changes, and commit."""
     if not changed_files:
@@ -284,17 +387,29 @@ if __name__ == "__main__":
     folders = ["minisudoku", "zip", "queens", "tango"]
     changed_files = []
 
+    # Create/update daily solution files and archive indices
     for folder in folders:
         if add_entry_to_index(folder, yyyymmdd):
             changed_files.append(os.path.join(folder, "index.html"))
         if create_daily_file(folder, yyyymmdd):
             changed_files.append(os.path.join(folder, f"{yyyymmdd}.html"))
 
+    # Update root and today pages
     if update_root_index(yyyymmdd):
         changed_files.append("index.html")
 
     if update_today_index(yyyymmdd):
         changed_files.append(os.path.join("today", "index.html"))
+
+    # Update SEO: sitemap and noindex for previous day
+    if update_sitemap(yyyymmdd):
+        changed_files.append("sitemap.xml")
+
+    if update_previous_day_to_noindex(yyyymmdd):
+        # Add previous day's solution files to changed list
+        previous_day = get_previous_day(yyyymmdd)
+        for folder in folders:
+            changed_files.append(os.path.join(folder, f"{previous_day}.html"))
 
     # Run git only if something changed
     if changed_files:
