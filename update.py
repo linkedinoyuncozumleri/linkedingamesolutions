@@ -252,7 +252,6 @@ def update_sitemap(yyyymmdd: str) -> bool:
         print(f"❌ {sitemap_path} not found.")
         return False
 
-    previous_day = get_previous_day(yyyymmdd)
     games = ['minisudoku', 'zip', 'queens', 'tango']
     changed = False
 
@@ -263,13 +262,25 @@ def update_sitemap(yyyymmdd: str) -> bool:
     # Get namespace
     ns = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
 
-    # Remove previous day's solution URLs from sitemap
+    # Remove all date-based solution URLs (keep only base structure)
+    # Handle both namespaced (sm:url) and non-namespaced (url) elements
     urls_to_remove = []
-    for game in games:
-        prev_url = f"https://linkedingamesolutions.com/{game}/{previous_day}.html"
-        for url_elem in root.findall('.//sm:url', ns):
-            loc = url_elem.find('sm:loc', ns)
-            if loc is not None and loc.text == prev_url:
+
+    # Find namespaced elements
+    for url_elem in root.findall('.//sm:url', ns):
+        loc = url_elem.find('sm:loc', ns)
+        if loc is not None:
+            # Check if URL contains a date pattern (e.g., /minisudoku/20251123.html)
+            if any(game in loc.text for game in games) and '.html' in loc.text:
+                urls_to_remove.append(url_elem)
+                changed = True
+
+    # Find non-namespaced elements (legacy/malformed entries)
+    for url_elem in root.findall('.//url'):
+        loc = url_elem.find('loc')
+        if loc is not None:
+            # Check if URL contains a date pattern (e.g., /minisudoku/20251123.html)
+            if any(game in loc.text for game in games) and '.html' in loc.text:
                 urls_to_remove.append(url_elem)
                 changed = True
 
@@ -280,35 +291,55 @@ def update_sitemap(yyyymmdd: str) -> bool:
     for game in games:
         new_url = f"https://linkedingamesolutions.com/{game}/{yyyymmdd}.html"
 
-        # Check if already exists
-        exists = False
-        for url_elem in root.findall('.//sm:url', ns):
-            loc = url_elem.find('sm:loc', ns)
-            if loc is not None and loc.text == new_url:
-                exists = True
-                break
+        # Create new URL element with namespace
+        url_elem = ET.Element('{http://www.sitemaps.org/schemas/sitemap/0.9}url')
+        loc = ET.SubElement(url_elem, '{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
+        loc.text = new_url
+        priority = ET.SubElement(url_elem, '{http://www.sitemaps.org/schemas/sitemap/0.9}priority')
+        priority.text = '0.9'
+        changefreq = ET.SubElement(url_elem, '{http://www.sitemaps.org/schemas/sitemap/0.9}changefreq')
+        changefreq.text = 'daily'
 
-        if not exists:
-            # Create new URL element
-            url_elem = ET.Element('url')
-            loc = ET.SubElement(url_elem, 'loc')
-            loc.text = new_url
-            priority = ET.SubElement(url_elem, 'priority')
-            priority.text = '0.9'
-            changefreq = ET.SubElement(url_elem, 'changefreq')
-            changefreq.text = 'daily'
-
-            root.append(url_elem)
-            changed = True
+        root.append(url_elem)
+        changed = True
 
     if changed:
-        # Write back with proper XML declaration
-        tree.write(sitemap_path, encoding='UTF-8', xml_declaration=True)
-        print(f"✅ Updated sitemap.xml: Added {yyyymmdd}, removed {previous_day}")
+        # Write back with proper formatting
+        _indent_xml(root)
+        _write_sitemap_xml(sitemap_path, root)
+        print(f"✅ Updated sitemap.xml: Added {yyyymmdd}")
     else:
         print(f"⚠️ Sitemap.xml already up to date.")
 
     return changed
+
+
+def _indent_xml(elem, level=0):
+    """Add proper indentation and newlines to XML elements."""
+    indent = "\n" + "  " * level
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = indent + "  "
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = indent
+        for child in elem:
+            _indent_xml(child, level + 1)
+        if not child.tail or not child.tail.strip():
+            child.tail = indent
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = indent
+
+
+def _write_sitemap_xml(filepath: str, root):
+    """Write sitemap XML with ns0 namespace prefix."""
+    with open(filepath, 'w', encoding='UTF-8') as f:
+        f.write("<?xml version='1.0' encoding='UTF-8'?>\n")
+        f.write(ET.tostring(root, encoding='unicode').replace(
+            '{http://www.sitemaps.org/schemas/sitemap/0.9}',
+            'ns0:'
+        ))
+
 
 def update_previous_day_to_noindex(yyyymmdd: str) -> bool:
     """Add noindex tag to previous day's solution pages."""
