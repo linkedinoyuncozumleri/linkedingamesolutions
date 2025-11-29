@@ -85,14 +85,55 @@ def create_daily_file(folder: str, yyyymmdd: str) -> bool:
         return False
 
     display_date = format_turkish_date(yyyymmdd)
-    dict_title={"minisudoku": "Mini Sudoku", "zip": "Zip", "queens":"Queens","tango":"Tango"}
+    dict_title = {"minisudoku": "Mini Sudoku", "zip": "Zip", "queens": "Queens", "tango": "Tango"}
+    dict_description = {
+        "minisudoku": "Solve today's Mini Sudoku puzzle with our expert solution.",
+        "zip": "Get the answer to today's Zip puzzle challenge instantly.",
+        "queens": "Find the solution to today's Queens puzzle with step-by-step guide.",
+        "tango": "Discover the answer to today's Tango puzzle puzzle."
+    }
+
+    title = dict_title[folder]
+    description = dict_description.get(folder, f"Solution for today's {title} puzzle")
+    url = f"https://linkedingamesolutions.com/{folder}/{yyyymmdd}.html"
+    image = f"https://linkedingamesolutions.com/images/{folder}_{yyyymmdd}.jpeg"
+
     content = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{dict_title[folder]} Solution – {display_date}</title>
+  <title>{title} Solution – {display_date}</title>
+  <meta name="description" content="{description}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{url}" />
   <link rel="stylesheet" href="../style.css">
+
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="{title} Solution – {display_date}">
+  <meta property="og:description" content="{description}">
+  <meta property="og:url" content="{url}">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="{image}">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{title} Solution – {display_date}">
+  <meta name="twitter:description" content="{description}">
+  <meta name="twitter:image" content="{image}">
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{title} Solution – {display_date}",
+    "description": "{description}",
+    "image": "{image}",
+    "url": "{url}",
+    "datePublished": "{yyyymmdd[:4]}-{yyyymmdd[4:6]}-{yyyymmdd[6:8]}"
+  }}
+  </script>
 </head>
 <body>
   <header>
@@ -107,9 +148,9 @@ def create_daily_file(folder: str, yyyymmdd: str) -> bool:
   </header>
 
   <main class="container">
-    <h1>{dict_title[folder]} – {display_date}</h1>
+    <h1>{title} – {display_date}</h1>
 
-    <img src="../images/{folder}_{yyyymmdd}.jpeg" alt="{dict_title[folder]} Solution" style="max-width: 60%;">
+    <img src="../images/{folder}_{yyyymmdd}.jpeg" alt="{title} Solution" style="max-width: 60%;">
 
     <footer>
       <hr>
